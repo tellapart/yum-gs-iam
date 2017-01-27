@@ -1,0 +1,15 @@
+;
+; sample Google Storage repository config
+; place to be placed into /etc/yum.repos.d/gssample.conf
+;
+
+[google-storage-example]
+name=GS yum plugin test repository config
+baseurl=gs://example-bucket/path-to-repo
+gpgcheck=0
+enabled=1
+
+; Optional config flags, set these if you credentials can not be auto retrieved
+; using the Google Application Default Credentials pipeline:
+;google_application_credentials=/path-to-creds/credentials.json
+;google_project_id=google-project-name
