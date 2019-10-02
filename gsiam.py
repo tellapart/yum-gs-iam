@@ -22,7 +22,7 @@ plugin_type = yum.plugins.TYPE_CORE
 CONDUIT = None
 OPTIONAL_ATTRIBUTES = ['priority', 'base_persistdir', 'metadata_expire',
                        'skip_if_unavailable', 'keepcache', 'priority']
-UNSUPPORTED_ATTRIBUTES = ['mirrorlist', 'proxy']
+UNSUPPORTED_ATTRIBUTES = ['mirrorlist']
 
 def config_hook(conduit):
   yum.config.RepoConf.google_project_id = yum.config.Option()
@@ -102,6 +102,11 @@ class GCSRepository(YumRepository):
     for attr in UNSUPPORTED_ATTRIBUTES:
       if getattr(repo, attr):
         msg = "%s: Unsupported attribute: %s." % (__file__, attr)
+        raise yum.plugins.PluginYumExit(msg)
+
+    proxy = getattr(repo, 'proxy')
+    if proxy not in [ '_none_', None, False ]:
+        msg = "%s: Unsupported attribute: proxy. Set proxy=_none_ for an override or unset proxy." % (__file__)
         raise yum.plugins.PluginYumExit(msg)
 
     self.grabber = None
