@@ -10,12 +10,12 @@ utilizes Google's [Cloud Identity and Access Management](https://cloud.google.co
 ### Setup the repository
 You should be familiar with how yum works in general.
 
-* If you want to use an internal Google bucket to host an internal mirror of a public
+* If you want to use an internal Google Cloud Storage bucket to host an internal mirror of a public
 repository (e.g. CentOS Core, EPEL, ...), simply rsync the repository to a local temp directory
 (check out [Create Local Mirrors for Updates and Installs](https://wiki.centos.org/HowTos/CreateLocalMirror))
 and then use [gsutil's rsync](https://cloud.google.com/storage/docs/gsutil/commands/rsync) to push it to your bucket.
 
-* If you want to create an internal repository for internal packages use [createrepo](http://yum.baseurl.org/wiki/RepoCreate)
+* If you want to create an internal repository for internal packages use [createrepo](http://yum.baseurl.org/wiki/RepoCreate.html)
 to create a repository in a local temp directory and push it to the bucket using `gsutil`
 or what ever other mechanism you like.
 
@@ -41,7 +41,7 @@ Now you can install the plugin on the machines that need access to the repo by:
 2. Install the plugin, e.g.: `yum install -y yum-plugin-gs-iam-*.rpm`
 3. The plugin depends on the google cloud and auth python libraries being installed `pip install google.auth google.cloud`
 
-You ready to configure your `.repo` file, check out the [example.repo](example.repo).
+You are ready to configure your `.repo` file, check out the [example.repo](example.repo).
 
 
 In short, the `baseurl` parameter in your `.repo` file is expected to be in the format: `gs://<bucket>/<path to repo>`
