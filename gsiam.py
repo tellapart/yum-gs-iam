@@ -86,7 +86,9 @@ class GCSRepository(YumRepository):
     if repo.google_project_id:
       os.environ[environment_vars.PROJECT] = repo.google_project_id
 
-    self.project_id = os.environ[environment_vars.PROJECT]
+    if environment_vars.PROJECT in os.environ:
+      self.project_id = os.environ[environment_vars.PROJECT]
+    
     self.bucket = bucket
     self.base_path = path
     self.name = repo.name
