@@ -136,7 +136,7 @@ class GCSGrabber(object):
 
   def __init__(self, bucket, path, project):
     self.client = storage.Client()
-    self.bucket = self.client.get_bucket(bucket)
+    self.bucket = self.client.bucket(bucket)
     self.base_path = path
     self.verbose_logger = logging.getLogger("yum.verbose.plugin.GCSGrabber")
 
