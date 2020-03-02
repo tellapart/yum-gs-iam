@@ -55,7 +55,7 @@ def replace_repo(repos, repo):
     repos.add(GCSRepository(repo.id, repo))
 
 
-def prereposetup_hook(conduit):
+def init_hook(conduit):
   """Plugin initialization hook. Setup the GCS repositories."""
   repos = conduit.getRepos()
   for repo in repos.listEnabled():
