@@ -25,7 +25,6 @@ OPTIONAL_ATTRIBUTES = ['priority', 'base_persistdir', 'metadata_expire',
 UNSUPPORTED_ATTRIBUTES = ['mirrorlist']
 
 def config_hook(conduit):
-  yum.config.RepoConf.google_project_id = yum.config.Option()
   yum.config.RepoConf.google_application_credentials = yum.config.Option()
   yum.config.RepoConf.baseurl = yum.config.UrlListOption(
     schemes=('http', 'https', 's3', 'ftp', 'file', URL_SCHEME.strip(':/'))
@@ -83,10 +82,7 @@ class GCSRepository(YumRepository):
 
     if repo.google_application_credentials:
       os.environ[environment_vars.CREDENTIALS] = repo.google_application_credentials
-    if repo.google_project_id:
-      os.environ[environment_vars.PROJECT] = repo.google_project_id
-
-    self.project_id = os.environ[environment_vars.PROJECT]
+    
     self.bucket = bucket
     self.base_path = path
     self.name = repo.name
@@ -128,13 +124,13 @@ class GCSRepository(YumRepository):
   @property
   def grab(self):
     if not self.grabber:
-      self.grabber = GCSGrabber(self.bucket, self.base_path, self.project_id)
+      self.grabber = GCSGrabber(self.bucket, self.base_path)
     return self.grabber
 
 
 class GCSGrabber(object):
 
-  def __init__(self, bucket, path, project):
+  def __init__(self, bucket, path):
     self.client = storage.Client()
     self.bucket = self.client.bucket(bucket)
     self.base_path = path

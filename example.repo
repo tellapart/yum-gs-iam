@@ -12,4 +12,3 @@ enabled=1
 ; Optional config flags, set these if you credentials can not be auto retrieved
 ; using the Google Application Default Credentials pipeline:
 ;google_application_credentials=/path-to-creds/credentials.json
-;google_project_id=google-project-name
