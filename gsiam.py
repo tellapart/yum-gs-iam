@@ -15,7 +15,7 @@ from yum.yumRepo import YumRepository
 URL_SCHEME = 'gs://'
 
 __all__ = ['requires_api_version', 'plugin_type', 'CONDUIT',
-           'config_hook', 'prereposetup_hook']
+           'config_hook', 'init_hook', 'prereposetup_hook']
 
 requires_api_version = '2.5'
 plugin_type = yum.plugins.TYPE_CORE
@@ -54,7 +54,7 @@ def replace_repo(repos, repo):
     repos.add(GCSRepository(repo.id, repo))
 
 
-def prereposetup_hook(conduit):
+def init_hook(conduit):
   """Plugin initialization hook. Setup the GCS repositories."""
   repos = conduit.getRepos()
   for repo in repos.listEnabled():
@@ -64,6 +64,11 @@ def prereposetup_hook(conduit):
     if bucket and isinstance(repo, YumRepository):
       check_base_url(repo.baseurl)
       replace_repo(repos, repo)
+
+
+def prereposetup_hook(conduit):
+  """Maintain compatibility with Yum on older CentOS (< 7.7.1908) releases."""
+  return init_hook(conduit)
 
 
 class GCSRepository(YumRepository):
@@ -82,7 +87,7 @@ class GCSRepository(YumRepository):
 
     if repo.google_application_credentials:
       os.environ[environment_vars.CREDENTIALS] = repo.google_application_credentials
-    
+
     self.bucket = bucket
     self.base_path = path
     self.name = repo.name
