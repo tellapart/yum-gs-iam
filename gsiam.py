@@ -33,8 +33,7 @@ def config_hook(conduit):
 
 def check_base_url(baseurl):
   if len(baseurl) != 1:
-    raise yum.plugins.PluginYumExit("Only one base url supported %",
-        baseurl)
+    raise yum.plugins.PluginYumExit("Only one base URL supported; got %s" % baseurl)
 
 
 def parse_url(url):
